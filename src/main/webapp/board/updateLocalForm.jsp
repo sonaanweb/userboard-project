@@ -2,7 +2,7 @@
 <%@ page import="java.sql.*" %>
 <%@ page import="vo.*" %>
 <%
-	response.setCharacterEncoding("utf-8");	
+	request.setCharacterEncoding("utf-8");
 
 	// 세션&요청값 유효성 검사
 	if(session.getAttribute("loginMemberId") == null) {

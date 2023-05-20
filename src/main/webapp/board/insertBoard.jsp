@@ -1,13 +1,41 @@
+<%@page import="java.util.ArrayList"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page import="java.sql.*" %>
+<%@ page import="vo.*" %>
+<%@ page import="java.net.*" %>
 <%
-	// 로컬네임 인코딩 오류 발생으로 수정 멈춤 
-	
-	response.setCharacterEncoding("UTF-8");
+	request.setCharacterEncoding("utf-8");
 
-	//세션 유효성 검사
+	// 유효성 검사
 	if(session.getAttribute("loginMemberId") == null) {
 		response.sendRedirect(request.getContextPath()+"/home.jsp");
 		return;
+	}
+	
+	/*System.out.println(session.getAttribute("loginMemberId") + "<--  insert board loginMemberId");*/
+	
+	String loginMemberId = (String)session.getAttribute("loginMemberId");
+	
+	//DB 연결
+	String driver = "org.mariadb.jdbc.Driver";
+	String dbUrl = "jdbc:mariadb://127.0.0.1:3306/userboard";
+	String dbUser = "root";
+	String dbPw = "java1234";	
+	Class.forName(driver);
+	Connection conn = DriverManager.getConnection(dbUrl, dbUser, dbPw);	
+	System.out.println(conn+"<---insertBoard conn");
+	
+	// 게시글 추가 작성이 가능한 카테고리명 노출 쿼리
+	String sql = "SELECT local_name localName FROM local";
+	PreparedStatement stmt = conn.prepareStatement(sql);
+	System.out.println(stmt+"<---insertBoard form stmt");
+	ResultSet rs = stmt.executeQuery();
+	
+	ArrayList<Local> localList = new ArrayList<Local>();
+	while(rs.next()){
+		Local L = new Local();	
+		L.setLocalName(rs.getString("localName"));
+		localList.add(L);
 	}
 %>
 <!DOCTYPE html>
@@ -53,7 +81,17 @@ background-color: #F6F6F6;}
 		<tr>
 			<td id="sub">카테고리</td>
 			<td>
-			<input type="text" name="localName">
+				<select name="localName">
+				<option value="bagic">=====</option>
+				<% 
+						for (Local local: localList) {
+				%>
+	      		<option value="<%=local.getLocalName()%>">
+	      		<%= local.getLocalName()%></option>
+				<%
+					} 
+				%>
+				</select>
 			</td>
 		</tr>
 		<tr>

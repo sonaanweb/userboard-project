@@ -29,7 +29,7 @@
 		<table class="table">
 			<tr>
 				<td>
-				<a style="float:inherit;" href="<%=request.getContextPath()%>/board/category.jsp" class="btn btn-warning">카테고리</a>
+				<a href="<%=request.getContextPath()%>/board/category.jsp" class="btn btn-outline-warning" style="color: black;">카테고리&#128193;</a>
 				</td>
 			</tr>
 		</table>

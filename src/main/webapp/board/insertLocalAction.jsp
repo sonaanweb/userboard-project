@@ -34,11 +34,10 @@
 	Connection conn = DriverManager.getConnection(dburl, dbuser, dbpw);
 	
 	// 카테고리 추가 결과셋 _ vo* 다 불러옴 _ insert into 사용
-	PreparedStatement insertLocalStmt = null;
-	ResultSet insertLocalRs = null;
-	String insertLocalSql = "INSERT INTO local(local_name, createdate, updatedate) values(?,now(),now());";
-	insertLocalStmt = conn.prepareStatement(insertLocalSql);
+	String insertLocalSql = "INSERT INTO local(local_name, createdate, updatedate) values(?,now(),now())";
+	PreparedStatement insertLocalStmt = conn.prepareStatement(insertLocalSql);
 	insertLocalStmt.setString(1, localName);
+	ResultSet insertLocalRs = null;
 	
 	System.out.println(insertLocalStmt + " <-- insertLocalAction Stmt");
 	

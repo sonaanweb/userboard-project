@@ -3,8 +3,8 @@
 <%@ page import = "java.net.*" %>
 <%@ page import = "vo.*" %>
 <%
-
-	response.setCharacterEncoding("utf-8");
+	request.setCharacterEncoding("utf-8");
+	//local del Action utf-8 >> 리스폰스가 아닌 request로 요청시 정상 확인
 
 	// 유효성 검사
 	if (session.getAttribute("loginMemberId") == null){
@@ -34,7 +34,6 @@
 	String sql = "select count(*) from board where local_name = ?";
 	PreparedStatement stmt = conn.prepareStatement(sql);
 	stmt.setString(1, localName);
-
 	ResultSet rs = stmt.executeQuery();
 	
 	int cnt = 0;
@@ -45,7 +44,7 @@
 	String msg = null;
 	if(cnt != 0){ // 0이 아니면 사용중인 게시판이므로 돌려보냄
 		msg = URLEncoder.encode("게시글이 남아있는 카테고리이므로 삭제할 수 없습니다.", "utf-8");
-		localName = URLEncoder.encode(localName, "utf-8"); //로컬네임 인코딩
+		localName = URLEncoder.encode(localName, "UTF-8"); //로컬네임 인코딩
 		response.sendRedirect(request.getContextPath()+"/board/deleteLocalForm.jsp?localName="+localName+"&msg="+msg);
 		return;
 	}
