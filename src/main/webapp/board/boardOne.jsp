@@ -206,14 +206,14 @@ a {text-decoration: none;}
 		}
 	%>
 	<!-- 3-3) comment list 결과셋 ----------------------------------------------------------->
-	<table class="table">
-		<tr>
+	<table class="table table-borderless">
+		<tr style="background-color: #F6F6F6;">
 			<th>작성자</th>
 			<th>내용</th>
 			<th>작성일</th>
 			<th>수정일</th>
-			<th>&nbsp;</th>
-			<th>&nbsp;</th>
+			<th></th>
+			<th></th>
 		</tr>
 		<%
 			for(Comment c : commentList){
@@ -227,10 +227,10 @@ a {text-decoration: none;}
 				if (loginMemberId.equals(c.getMemberId())) { 
 			%>
 			<td>
-				<a href="<%=request.getContextPath()%>/board/updateCommentForm.jsp?boardNo=<%=c.getBoardNo()%>&commentNo=<%=c.getCommentNo()%>&memberId=<%=c.getMemberId()%>&commentContent=<%=c.getCommentContent()%>" class="btn btn-success">수정</a>
+				<a href="<%=request.getContextPath()%>/board/updateCommentForm.jsp?boardNo=<%=c.getBoardNo()%>&commentNo=<%=c.getCommentNo()%>&memberId=<%=c.getMemberId()%>&commentContent=<%=c.getCommentContent()%>" class="btn btn-success" style="font-size: 12px;">수정</a>
 			</td>
 			<td>
-				<a href="<%=request.getContextPath()%>/board/deleteCommentAction.jsp?commentNo=<%=c.getCommentNo()%>&boardNo=<%=c.getBoardNo()%>&memberId=<%=c.getMemberId()%>" class="btn btn-success">삭제</a>
+				<a href="<%=request.getContextPath()%>/board/deleteCommentAction.jsp?commentNo=<%=c.getCommentNo()%>&boardNo=<%=c.getBoardNo()%>&memberId=<%=c.getMemberId()%>" class="btn btn-success" style="font-size: 12px;">삭제</a>
 			</td>
 		<%
 			}

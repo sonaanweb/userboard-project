@@ -82,8 +82,8 @@
 				<td><input type ="text" name="updateComment" size="120"></td>
 			</tr>
 		</table>
-		<a href="<%=request.getContextPath()%>/board/boardOne.jsp?boardNo=<%=com.getBoardNo()%>" class="btn btn-light">취소</a>
 		<button type="submit" class="btn btn-light">수정</button>
+		<a href="<%=request.getContextPath()%>/board/boardOne.jsp?boardNo=<%=com.getBoardNo()%>" class="btn btn-light">취소</a>
 	</form>
 </div>
 </body>

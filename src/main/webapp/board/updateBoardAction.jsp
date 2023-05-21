@@ -27,9 +27,9 @@
 	
 	// 받아온 요청값 변수에 저장
 	int boardNo = Integer.parseInt(request.getParameter("boardNo"));
-	String LocalName = request.getParameter("LocalName");
-	String boardTitle = request.getParameter("boardTitle");
-	String boardContent = request.getParameter("boardContent");
+	String LocalName = request.getParameter("updateLocal");
+	String boardTitle = request.getParameter("updateTitle");
+	String boardContent = request.getParameter("updateContent");
 	String loginMemberId = (String)session.getAttribute("loginMemberId");
 	
 	/*System.out.println(boardNo + " <--updateBoardAction no");
@@ -41,12 +41,12 @@
 	String msg = "";
 	// 수정시 공백 칸 불가 - 필수 입력 사항 3가지
 	// 안내 메세지 출력 + 폼 변화 없음
-	if(request.getParameter("LocalName") == null
-			|| request.getParameter("LocalName").equals("")
-			|| request.getParameter("boardTitle") == null
-			|| request.getParameter("boardTitle").equals("")
-			|| request.getParameter("boardContent") == null
-			|| request.getParameter("boardContent").equals("")){
+	if(request.getParameter("updateLocal") == null
+			|| request.getParameter("updateLocal").equals("")
+			|| request.getParameter("updateTitle") == null
+			|| request.getParameter("updateTitle").equals("")
+			|| request.getParameter("updateContent") == null
+			|| request.getParameter("updateContent").equals("")){
 		msg = URLEncoder.encode("내용을 입력해주세요", "utf-8");
 		response.sendRedirect(request.getContextPath() + "/board/updateBoard.jsp?boardNo=" +boardNo+ "&msg="+msg);
 		return;

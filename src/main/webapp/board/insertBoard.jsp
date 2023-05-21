@@ -1,8 +1,7 @@
-<%@page import="java.util.ArrayList"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ page import="java.sql.*" %>
 <%@ page import="vo.*" %>
-<%@ page import="java.net.*" %>
+<%@ page import="java.util.*"%>
 <%
 	request.setCharacterEncoding("utf-8");
 
@@ -84,10 +83,10 @@ background-color: #F6F6F6;}
 				<select name="localName">
 				<option value="bagic">=====</option>
 				<% 
-						for (Local local: localList) {
+						for (Local L: localList) {
 				%>
-	      		<option value="<%=local.getLocalName()%>">
-	      		<%= local.getLocalName()%></option>
+	      		<option value="<%=L.getLocalName()%>">
+	      		<%= L.getLocalName()%></option>
 				<%
 					} 
 				%>

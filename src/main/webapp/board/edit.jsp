@@ -13,6 +13,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+<style>
+#btn{
+	text-align: center;"
+}
+</style>
 <title>EDIT</title>
 </head>
 <body>
@@ -28,8 +33,8 @@
 		<hr>
 		<table class="table">
 			<tr>
-				<td>
-				<a href="<%=request.getContextPath()%>/board/category.jsp" class="btn btn-outline-warning" style="color: black;">카테고리&#128193;</a>
+				<td id="btn">
+				<a href="<%=request.getContextPath()%>/board/category.jsp" class="btn btn-outline-warning" style="color: black;" >카테고리&#128193;</a>
 				</td>
 			</tr>
 		</table>

@@ -42,27 +42,9 @@
 	Class.forName(driver);
 	Connection conn = DriverManager.getConnection(dburl, dbuser, dbpw);
 	
-	//1) 게시글 추가시 카테고리 유효값 확인 쿼리
-	String insertsql = "SELECT count(*) FROM board WHERE local_name = ?";
-	PreparedStatement insertstmt = conn.prepareStatement(insertsql);
-	insertstmt.setString(1,localName);
-	System.out.println(insertstmt + "<--- insert board stmt");
-	ResultSet rs = insertstmt.executeQuery();
 	
-	int cnt = 0;
-	    if (rs.next()) { // 존재하는 카테고리면 cnt값 (+)
-	        cnt = rs.getInt("count(*)");
-	    }
-	
-    if (cnt <= 0) { //존재하지 않는 카테고리일 시 메세지 출력 cnt값 변화 없음
-    	System.out.println("유효하지 않은 카테고리입니다.");
-    	msg = URLEncoder.encode("유효하지 않은 카테고리입니다. 카테고리를 추가해주세요","utf-8");
-        response.sendRedirect(request.getContextPath()+"/board/insertBoard.jsp?msg="+msg);
-        return;
-    }
-    
-    //2) 게시글 추가 쿼리 insert into
-	String boardSql = "INSERT into board(local_name, board_title, board_content, member_id, createdate, updatedate) value(?, ?, ?, ?, NOW(), NOW())";
+    // 게시글 추가 쿼리 insert into
+	String boardSql = "INSERT into board(local_name, board_title, board_content, member_id, createdate, updatedate) values(?, ?, ?, ?, NOW(), NOW())";
 	PreparedStatement BoardStmt = conn.prepareStatement(boardSql);
 	BoardStmt.setString(1, localName);
 	BoardStmt.setString(2, boardTitle);

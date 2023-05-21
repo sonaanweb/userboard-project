@@ -55,7 +55,20 @@
 		one.setMemberId(boardRs.getString("memberId"));
 		one.setCreatedate(boardRs.getString("createdate"));
 		one.setUpdatedate(boardRs.getString("updatedate"));
-}
+	}
+	
+	// 게시글 수정 카테고리 지역명 선택 쿼리	
+	String localsql = "SELECT local_name localName FROM local";
+	PreparedStatement stmt = conn.prepareStatement(localsql);
+	System.out.println(stmt+"<---update board local stmt");
+	ResultSet rs2 = stmt.executeQuery();
+	
+	ArrayList<Local> localList = new ArrayList<Local>();
+	while(rs2.next()){ //같은 페이지 내 rs값이 두개 이상일 때 설정한 변수값 잘 확인하기. 오류를 띄워주지 않음
+		Local L = new Local();	
+		L.setLocalName(rs2.getString("localName"));
+		localList.add(L);
+	}
 %>
 <!DOCTYPE html>
 <html>
@@ -101,19 +114,29 @@ a {text-decoration: none;}
 		<tr>
 			<td>지역명</td>
 			<td>
-			<input type="text" name="LocalName" value="<%=one.getLocalName()%>">
+				<select name="updateLocal">
+				<option value="bagic">=====</option>
+				<% 
+						for (Local L: localList) {
+				%>
+	      		<option value="<%=L.getLocalName()%>">
+	      		<%=L.getLocalName()%></option>
+				<%
+					} 
+				%>
+				</select>
 			</td>
 		</tr>
 		<tr>
 			<td>제목</td>
 			<td>
-			<input type="text" name="boardTitle" value="<%=one.getBoardTitle()%>">
+			<input type="text" name="updateTitle" value="<%=one.getBoardTitle()%>">
 			</td>
 		</tr>
 		<tr>
 			<td>내용</td>
 			<td>
-			<textarea rows="5" cols="80" name="boardContent"><%=one.getBoardContent()%>
+			<textarea rows="5" cols="80" name="updateContent"><%=one.getBoardContent()%>
 			</textarea>
 			</td>
 		</tr>
