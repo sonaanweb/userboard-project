@@ -11,10 +11,13 @@
 	   return;
 	} 
 
+	String msg = "";
+	
 	// 요청값 저장
 	int commentNo = Integer.parseInt(request.getParameter("commentNo"));
 	String comment = request.getParameter("comment");
 	String updateComment = request.getParameter("updateComment");
+	int boardNo = Integer.parseInt(request.getParameter("boardNo"));
 	
 	System.out.println(commentNo + "<---update com No");
 	System.out.println(comment + "<---pre comment");
@@ -27,10 +30,10 @@
 	|| request.getParameter("comment").equals ("")
 	|| request.getParameter("updateComment")==null
 	|| request.getParameter("updateComment").equals ("")) {
-		response.sendRedirect(request.getContextPath()+"/board/updateCommentForm.jsp&commentNo="+commentNo);
+		msg = URLEncoder.encode("수정할 내용을 입력해주세요.", "utf-8");
+		response.sendRedirect(request.getContextPath() +"/board/updateCommentForm.jsp?msg="+msg+"&boardNo="+boardNo+"&commentNo="+commentNo); //msg호출 먼저
 		return;
 	} 
-
 	// DB연동 모델값
 	String driver = "org.mariadb.jdbc.Driver";
 	String dburl = "jdbc:mariadb://127.0.0.1:3306/userboard";
@@ -53,10 +56,10 @@
 	int row = CommentUpstmt.executeUpdate();
 	if(row == 1) {// 댓글 수정 성공 수정행 1 
 		System.out.println("댓글이 수정되었습니다");
-		response.sendRedirect(request.getContextPath()+"/board/boardOne.jsp");
+		response.sendRedirect(request.getContextPath()+"/board/boardOne.jsp?boardNo="+boardNo);
 	} else {
 		System.out.println("댓글 수정에 실패하였습니다");
-		response.sendRedirect(request.getContextPath()+"/board/updateCommentForm.jsp?commentNo=" + commentNo);
+		response.sendRedirect(request.getContextPath()+"/board/updateCommentForm.jsp?commentNo="+commentNo);
 		return;
 	}
 %>

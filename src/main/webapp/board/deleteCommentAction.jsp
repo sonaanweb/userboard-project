@@ -29,7 +29,7 @@
 	}
 	
 	// boardOne 삭제버튼에서 받아온 값 저장하기
-	String boardNo = request.getParameter("boardNo");
+	int boardNo = Integer.parseInt(request.getParameter("boardNo"));
 	String memberId = request.getParameter("memberId");
 	String commentNo = request.getParameter("commentNo");
 	
@@ -59,7 +59,7 @@
 	PreparedStatement Stmt = conn.prepareStatement(Sql);
 	Stmt.setString(1, commentNo);
 	Stmt.setString(2, memberId);
-	Stmt.setString(3, boardNo);
+	Stmt.setInt(3, boardNo);
 	System.out.println(Stmt + " <---stmt-- commentDelete.jsp delStmt" );
 
 	// 댓글 삭제 확인 행

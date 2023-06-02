@@ -16,8 +16,9 @@
 	}
 	
 	// 필요한 요청 값 받아와 저장하기
-	String loginMemberId = "";
+	String loginMemberId = (String)session.getAttribute("loginMemberId");
 	int commentNo = Integer.parseInt(request.getParameter("commentNo"));
+	int boardNo = Integer.parseInt(request.getParameter("boardNo"));
 	
 	// DB연동 모델값
 	String driver = "org.mariadb.jdbc.Driver";
@@ -68,7 +69,17 @@
 	<br>
 	<h2 style="text-align: center">댓글 수정</h2>
 	<hr>
+	<div>
+	<%
+		if(request.getParameter("msg") != null) {
+	%>
+		<%=request.getParameter("msg")%>
+	<%
+		}
+	%>
+	</div>
 	<form action="<%=request.getContextPath()%>/board/updateCommentAction.jsp?commentNo=<%=com.getCommentNo()%>&boardNo=<%=com.getBoardNo()%>">
+	<input type="hidden" name="boardNo" value="<%=com.getBoardNo()%>">
 		<table class="table">
 			<tr>
 				<td>현재 댓글</td>
