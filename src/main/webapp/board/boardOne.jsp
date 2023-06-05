@@ -21,10 +21,6 @@
 	// 게시판 번호 불러오기
 	// 1. 컨트롤러 계층
 	int boardNo = Integer.parseInt(request.getParameter("boardNo"));
-	// ------ 페이징
-	int currentPage = 1;
-	int rowPerPage = 10;
-	int startRow = 0;
 	
 	// 유효성 검사
 	if(request.getParameter("boardNo") == null
@@ -72,7 +68,23 @@
 		one.setCreatedate(boardRs.getString("createdate"));
 		one.setUpdatedate(boardRs.getString("updatedate"));
 	}
-// 2-2) comment list 결과셋 ---------------------------------------------------------
+// 2-2) comment list  ---------------------------------------------------------
+	// ------ 댓글창 페이징 변수 선언------------------------------
+	int currentPage = 1;
+	if(request.getParameter("currentPage") != null){ //null값이 아니면 그대로 출력
+		currentPage = Integer.parseInt(request.getParameter("currentPage"));
+	}
+	
+	int rowPerPage = 5; //페이지당 출력 될 행의 수
+	
+	int startRow = (currentPage-1)*rowPerPage; // maria DB 페이징 알고리즘 * 시작행 번호 0부터
+	int totalRow = 0; // 출력될 총 행의 수 
+	
+	int pageCount = 10; // 하단 페이징 버튼 수
+	int startPage = ((currentPage - 1) / pageCount) * pageCount + 1; //페이징 버튼 시작 값
+	int endPage = startPage + pageCount - 1; // 페이징 종료 값
+	// ------------------------------------------------------
+		
 	PreparedStatement commentStmt = null;
 	ResultSet commentRs = null;
 	String commentSql = "SELECT comment_no commentNo, board_no boardNo, comment_content commentContent, member_id memberId, createdate, updatedate FROM comment WHERE board_no =? ORDER BY createdate DESC LIMIT ?,?";
@@ -93,6 +105,21 @@
 		c.setCreatedate(commentRs.getString("createdate"));
 		c.setUpdatedate(commentRs.getString("updatedate"));
 		commentList.add(c);	
+	}
+	
+// 2-3) 하단 댓글 페이징 쿼리  -------------------------------------------------------------
+
+	String csql = "select count(*) from comment where board_no=? order by createdate DESC";
+	PreparedStatement cstmt = conn.prepareStatement(csql);
+	cstmt.setInt(1,boardNo);
+	ResultSet crs = cstmt.executeQuery();
+	if(crs.next()){ // from comment 전체
+		totalRow = crs.getInt("count(*)");
+	}
+	endPage = totalRow / rowPerPage; // if문이 끝나면 마지막 페이지는 t.row/r.p가 나누어 떨어진 값
+	
+	if(totalRow % rowPerPage !=0){
+		endPage = endPage + 1; // 두번째 if문 = 나누어 떨어지지 않으면 남은 행을 보여주기 위해 페이지 +1
 	}
 
 %>
@@ -181,15 +208,9 @@ a {text-decoration: none;}
 	%>
 	<div>
 		<form action="<%=request.getContextPath()%>/board/insertCommentAction.jsp">
-			<input type="hidden" name="boardNo" value="<%=one.getBoardNo()%>">
+			<input type="hidden" name="boardNo" value="<%=one.getBoardNo()%>"><!-- input type : hidden 사용자 눈엔 보이지 않게 하고 form 값 넘겨줌 -->
 			<input type="hidden" name="memberId" value="<%=loginMemberId%>"> <!-- 로그인한 아이디. 불러온 값 -->
 			<table class="table2">
-				<tr>
-					<td style="padding-right: 5pt;">boardNo</td>
-					<td>
-					<input type="text" name="boardNo" value="<%=one.getBoardNo()%>">
-					</td>
-				</tr>
 				<tr>
 					<td style="padding-right: 5pt;">comment</td>
 					<td>
@@ -240,13 +261,26 @@ a {text-decoration: none;}
 			}
 		%>
 	</table>
+	<!-- 댓글페이징 -->
 	<div>
+	<%
+		if(currentPage > 1){ //현재 페이지가 1보다 크면 '이전'버튼 출력
+	%>
 		<a href="<%=request.getContextPath()%>/board/boardOne.jsp?boardNo=<%=boardNo%>&currentPage=<%=currentPage-1%>">
 		이전
 		</a>
+	<%
+		}
+	%>
+	<%
+		if(currentPage < endPage && totalRow > rowPerPage){ //현재 페이지가 마지막 페이지보다 작고, 총 행의 수가 출력 개수보다 크면 '다음'버튼 출력
+	%>
 		<a href="<%=request.getContextPath()%>/board/boardOne.jsp?boardNo=<%=boardNo%>&currentPage=<%=currentPage+1%>">
 		다음
 		</a>
+	<%
+		}
+	%>
 	</div>
 	<br>
 	<jsp:include page="/inc/copyright.jsp"></jsp:include>

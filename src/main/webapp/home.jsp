@@ -3,10 +3,6 @@
 <%@ page import = "java.util.*" %>
 <%@ page import = "vo.*" %>
 <%
-
-	// SQL 백업 - 파일 실행 (WEB-INF 안에 백업파일 넣기)
-	// 댓글 - 수정/삭제
-	// 게시글 - 입력/수정/삭제(cascade - 게시글 삭제시 달려있던 댓글 자동 삭제)
 	
 	response.setCharacterEncoding("utf-8");
 
