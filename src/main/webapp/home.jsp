@@ -22,7 +22,7 @@
 	int startRow = (currentPage-1)*rowPerPage; // maria DB 페이징 알고리즘 * 시작행 번호 0부터
 	int totalRow = 0; // 출력될 총 행의 수 
 	
-	int pageCount = 10; // 하단 페이징 버튼 수
+	int pageCount = 5; // 하단 페이징 버튼 수
 	int startPage = ((currentPage - 1) / pageCount) * pageCount + 1; //페이징 버튼 시작 값
 	int endPage = startPage + pageCount - 1; // 페이징 종료 값
 	
@@ -32,7 +32,7 @@
 	if(request.getParameter("localName") != null) { // 전체가 아니면, 해당 localName으로 뜬다
 		localName = request.getParameter("localName");
 	}
-	/*System.out.println(localName + "<----home localnmae"); == 전체*/
+	/*System.out.println(localName + "<----home localname"); == 전체*/
 	
 	// 2. 모델 계층
 	String driver = "org.mariadb.jdbc.Driver";
@@ -116,17 +116,36 @@
 	
 	// 페이징 마지막 설정 ---------------------
 	// 전체 행 쿼리
-
-	String totalRowSql = "SELECT count(*) FROM board";
+	/* String totalRowSql = "SELECT count(*) FROM board";
 	PreparedStatement totalStmt = conn.prepareStatement(totalRowSql);
 	ResultSet totalRs = null;
 	totalRs = totalStmt.executeQuery();
-	/* System.out.println("totalStmt-->"+totalStmt);
-	System.out.println("totalRs-->"+totalRs); */
+	System.out.println("totalStmt-->"+totalStmt);
+	System.out.println("totalRs-->"+totalRs);
 			
 	//전체 페이지수
 	if(totalRs.next()){
 		totalRow=totalRs.getInt("count(*)");
+	}
+	*/
+	// 카테고리 정보에 따라 전체 게시글 수를 다르게 조회하도록 변경
+	if (localName.equals("전체")) { // 카테고리 네임이 "전체"일 때는 모든 테이블을 select하고,
+	    String totalRowSql = "SELECT COUNT(*) FROM board";
+	    PreparedStatement totalStmt = conn.prepareStatement(totalRowSql);
+	    ResultSet totalRs = totalStmt.executeQuery();
+
+	    if (totalRs.next()) {
+	        totalRow = totalRs.getInt(1);
+	    }
+	} else { // 카테고리 네임을 따로 선택했을 시 해당 카테고리내 게시글만 select 된다.
+	    String totalRowSql = "SELECT COUNT(*) FROM board WHERE local_name=?";
+	    PreparedStatement totalStmt = conn.prepareStatement(totalRowSql);
+	    totalStmt.setString(1, localName);
+	    ResultSet totalRs = totalStmt.executeQuery();
+
+	    if (totalRs.next()) {
+	        totalRow = totalRs.getInt(1);
+	    }
 	}
 	int lastPage = totalRow/rowPerPage;
 	
@@ -203,6 +222,18 @@ color: black;}
 	</div>
 	<!--- 서브메뉴(세로)subMenuList모델을 출력 -------------------------------------------------------->
 	<br>
+<!-- 
+<div class="dropdown">
+  <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenu2" data-bs-toggle="dropdown" aria-expanded="false">
+    Dropdown
+  </button>
+  <ul class="dropdown-menu" aria-labelledby="dropdownMenu2">
+    <li><button class="dropdown-item" type="button">Action</button></li>
+    <li><button class="dropdown-item" type="button">Another action</button></li>
+    <li><button class="dropdown-item" type="button">Something else here</button></li>
+  </ul>
+</div>
+ -->
 		<div>
 			<ul class="ul2">
 	         <%
@@ -260,7 +291,7 @@ color: black;}
 			if(currentPage > pageCount){ //이전 페이지 버튼
 		%>
 			<li class="page-item">
-			<a class="page-link" href="<%=request.getContextPath()%>/home.jsp?currentPage=<%=startPage-10 %>&localName=<%=localName%>">
+			<a class="page-link" href="<%=request.getContextPath()%>/home.jsp?currentPage=<%=startPage-5 %>&localName=<%=localName%>">
 	   		이전
 	   		</a>
 	   		</li>
