@@ -175,11 +175,20 @@
 <title>home</title>
 <!-- 부트스트랩5 사용 -->
 <style>
+@font-face {
+    font-family: 'omyu_pretty';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2304-01@1.0/omyu_pretty.woff2') format('woff2');
+    font-weight: normal;
+    font-style: normal;
+}
+body{
+font-family: 'omyu_pretty';
+}
 .ul2 {
   list-style-type: none;
   margin: 0;
   padding: 0;
-  width: 200px;
+  width: 170px;
   background-color: #f1f1f1;
 }
 
@@ -222,28 +231,17 @@ color: black;}
 	</div>
 	<!--- 서브메뉴(세로)subMenuList모델을 출력 -------------------------------------------------------->
 	<br>
-<!-- 
-<div class="dropdown">
-  <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenu2" data-bs-toggle="dropdown" aria-expanded="false">
-    Dropdown
-  </button>
-  <ul class="dropdown-menu" aria-labelledby="dropdownMenu2">
-    <li><button class="dropdown-item" type="button">Action</button></li>
-    <li><button class="dropdown-item" type="button">Another action</button></li>
-    <li><button class="dropdown-item" type="button">Something else here</button></li>
-  </ul>
-</div>
- -->
-		<div>
+		<div class=row>
+		<div class="col-md-2">
 			<ul class="ul2">
 	         <%
 	            for(HashMap<String, Object> m : subMenuList) {
 	         %>
-		<li class="li2">
-		<a href="<%=request.getContextPath()%>/home.jsp?localName=<%=(String)m.get("localName")%>">
-		<%=(String)m.get("localName")%>(<%=(Integer)m.get("cnt")%>)
-	    </a>
-		</li>
+				<li class="li2">
+				<a href="<%=request.getContextPath()%>/home.jsp?localName=<%=(String)m.get("localName")%>">
+				<%=(String)m.get("localName")%>(<%=(Integer)m.get("cnt")%>)
+			    </a>
+				</li>
 	         <%      
 	            }
 	         %>
@@ -251,7 +249,7 @@ color: black;}
 		</div>
 	<!--- 로그인 유효할 시 보이는 게시글 추가 버튼 -->
 	<br>
-		<div>
+		<div class="col-md-10">
 		<h2>최근 게시글 목록&#128194;</h2>
 	<%
 	     if(session.getAttribute("loginMemberId") != null) { // 로그인 상태여야 게시글 추가 버튼 보임
@@ -261,6 +259,7 @@ color: black;}
 	      	}
 	%>
 	<!---[시작]최근 게시글 목록 ------------------------------------------------------------------------>
+			<div class="container mt-3">
 		<table class="table">
 			<tr>
 				<th>지역</th>
@@ -285,8 +284,7 @@ color: black;}
 		</table>
 		</div>
 	<!---페이징 버튼----------------------------------------------------------------------------------->
-		<div class="container mt-3">
-		<ul class="pagination">
+		<ul class="pagination" >
 		<%
 			if(currentPage > pageCount){ //이전 페이지 버튼
 		%>
@@ -327,6 +325,7 @@ color: black;}
 			}
 		%>
 	</ul>
+	</div>
 	</div>
 		
 	<!---[끝]-------------------------------------------------------------------------------------->
